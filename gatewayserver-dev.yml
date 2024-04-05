@@ -1,5 +1,5 @@
 server:
-    port: 8001
+  port: 8001
 eureka:
   client:
     fetchRegistry: true
@@ -12,14 +12,14 @@ eureka:
 
 spring:
   cloud:
-      getway:
-         mvc:
-             routes[0]:
-                 id: customerservice
-                 predicates[0]: Path=/api//v1/cities/**
-                 uri: lb://customerservice
-             routes[1]:
-                id: dicvoveryserver
-                predicates[0]: Path=/eureka/web
-                filters[0]: SetPath=/
-                uri: https://localhost:8888
+    gateway:
+      mvc:
+        routes[0]:
+          id: customerservice
+          predicates[0]: Path=/api/v1/cities/**
+          uri: lb://customerservice
+        routes[1]:
+          id: discoveryserver
+          predicates[0]: Path=/eureka/web
+          filters[0]: SetPath=/
+          uri: http://localhost:8888
