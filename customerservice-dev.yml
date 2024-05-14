@@ -26,21 +26,7 @@
 #     instance-id: ${spring.application.name}:${instanceId:${random.value}}
 #     preferIpAddress: true
 
-    server:
-  port: 8081
-spring:
-  application:
-    name: customerservice
-  datasource:
-    url: jdbc:postgresql://localhost:5433/crmcatalog
-    username: postgres
-    password: 12345
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+
 eureka:
   client:
     fetchRegistry: true
@@ -50,3 +36,24 @@ eureka:
   instance:
     instance-id: ${spring.application.name}:${instanceId:${random.value}}
     preferIpAddress: true
+server:
+  port: 8081
+spring:
+  application:
+    name: customerservice
+  datasource:
+    url: jdbc:postgresql://localhost:5432/crmcustomer
+    username: postgres
+    password: 12345
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    
