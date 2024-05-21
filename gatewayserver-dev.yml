@@ -1,53 +1,42 @@
-# server:
-#   port: 8001
-# eureka:
-#   client:
-#     fetchRegistry: true
-#     registerWithEureka: true
-#     serviceUrl:
-#       defaultZone: http://localhost:8888/eureka
-#   instance:
-#     instance-id: ${spring.application.name}:${instanceId:${random.value}}
-#     preferIpAddress: true
-
-# spring:
-#   cloud:
-#     gateway:
-#       mvc:
-#         routes[0]:
-#           id: customerservice
-#           predicates[0]: Path=/customerservice/api/v1/cities/**
-#           uri: lb://customerservice
-#         routes[1]:
-#           id: discoveryserver
-#           predicates[0]: Path=/eureka/web
-#           filters[0]: SetPath=/
-#           uri: http://localhost:8888
-
-
-
-server:
-  port: 8001
 eureka:
   client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8888/eureka
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
   instance:
     instance-id: ${spring.application.name}:${instanceId:${random.value}}
     preferIpAddress: true
-
+server:
+  port: 8001
 spring:
+  application:
+    name: gatewayserver
   cloud:
     gateway:
-      mvc:
-        routes[0]:
-          id: customerservice
-          predicates[0]: Path=/customerservice/api/v1/**
-          uri: lb://CUSTOMERSERVICE
-        routes[1]:
-          id: discoveryserver
-          predicates[0]: Path=/eureka/web
-          filters[0]: SetPath=/
-          uri: http://localhost:8888
+      default-filters:
+        - RemoveRequestHeader=Origin
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+        globalcors:
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins:
+                - "http://localhost:8050"
+                - "http://localhost:8088"
+                - "http://localhost:8081"
+                - "http://localhost:8082"
+                - "http://localhost:8083"
+                - "http://localhost:8084"
+                - "http://localhost:4200"
+              allowCredentials: true
+              allowedMethods:
+                - GET
+                - POST
+                - DELETE
+                - PUT
+                - OPTIONS
+              allowedHeaders: "*"
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
